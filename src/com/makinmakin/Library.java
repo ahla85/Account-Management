@@ -45,7 +45,7 @@ public class Library implements CRUD {
             return;
         }
 
-        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\s");
+        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         //  Filter objek Accounts.
         accounts.filter(keywords);
         if (accounts.isEmpty()) {
@@ -65,7 +65,7 @@ public class Library implements CRUD {
             return;
         }
 
-        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\s");
+        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         //  Filter objek Accounts.
         accounts.filter(keywords);
         if (accounts.isEmpty()) {
@@ -102,8 +102,8 @@ public class Library implements CRUD {
         newAccount.setRecoveryAccount(console.readLine("Masukkan account recovery: "));
         newAccount.setPassword(console.readLine("Masukkan password: "));
         newAccount.setNumberPhone(console.readLine("Masukkan numberphone: "));
-        newAccount.setDate(console.readLine("Masukkan date: "));
-        newAccount.setMonth(console.readLine("Masukkan month: "));
+        // newAccount.setDate(console.readLine("Masukkan date: "));
+        // newAccount.setMonth(console.readLine("Masukkan month: "));
         newAccount.setYears(console.readLine("Masukkan years: "));
 
         if (accounts.containsKey(newAccount.getEmail())) {
@@ -137,7 +137,7 @@ public class Library implements CRUD {
             return;
         }
 
-        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\s");
+        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         // Filter objek Accounts.
         filterAccounts.filter(keywords);
         if (accounts.isEmpty()) {
@@ -190,7 +190,7 @@ public class Library implements CRUD {
             return;
         }
 
-        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\s");
+        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         // Filter objek Accounts.
         accounts.filter(keywords);
         if (accounts.isEmpty()) {

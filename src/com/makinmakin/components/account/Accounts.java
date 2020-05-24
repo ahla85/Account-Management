@@ -25,7 +25,7 @@ public class Accounts extends TreeMap<String, Account> {
             JSONArray<JSONObject> jsonArray = (JSONArray) new JSONParser().parse(new FileReader(file));
             AtomicReference<Account> account = new AtomicReference<>();
             jsonArray.forEach(V -> {
-                account.set(new Account((JSONObject) V));
+                account.set(new Account(V));
                 super.put(account.get().getEmail(), account.get());
             });
         } catch (IOException e) {
@@ -52,7 +52,7 @@ public class Accounts extends TreeMap<String, Account> {
         });
 
         super.clear();
-        if (accounts == null || accounts.size() == 0)
+        if (accounts.size() == 0)
             return null;
         accounts.forEach((K, V) -> super.put(K, V));
         return this;
