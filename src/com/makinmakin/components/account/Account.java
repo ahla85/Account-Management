@@ -2,6 +2,7 @@ package com.makinmakin.components.account;
 
 import java.time.Year;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import com.json.JSONObject;
 
@@ -45,7 +46,7 @@ public class Account extends HashMap<String, Object> {
 	
 	public Account(JSONObject jSONObject) {
 		setUserName((String) jSONObject.get("user-name"));
-		setServices((String) jSONObject.get("services"));
+		setServices((ArrayList<String>) jSONObject.get("services"));
 		setDescription((String) jSONObject.get("description"));
 		setNickDescription((String) jSONObject.get("nick-description"));
 		setEmail((String) jSONObject.get("email"));
@@ -67,7 +68,7 @@ public class Account extends HashMap<String, Object> {
 					setEmail((String) value);
 					break;
 				case "date":
-					setDate((Long) value);
+					setDate((Object) value);
 					break;
 				case "nick-description":
 					setNickDescription((String) value);
@@ -79,10 +80,10 @@ public class Account extends HashMap<String, Object> {
 					setUserName((String) value);
 					break;
 				case "services":
-					setServices((String) value);
+					setServices((ArrayList<String>) value);
 					break;
 				case "month":
-					setMonth((Long) value);
+					setMonth((Object) value);
 					break;
 				case "years":
 					setYears((String) value);
@@ -109,11 +110,19 @@ public class Account extends HashMap<String, Object> {
 			super.put("email", email);
 	}
 
-	public void setDate(Long date) {
-		if (date == null || date < 1 || date > 31)
-			super.put("date", null);
-		else
-			super.put("date", date);
+	/**
+	 *  Tanggal pemilik akun lahir. 
+	 * @param date
+	 */
+	public void setDate(Object date) {
+		if (date instanceof Long) {
+			Long var = (Long) date;
+			if (!(var == null || var < 1 || var > 31)) {
+				super.put("date", var);
+				return;
+			}
+		}
+		super.put("date", null);
 	}
 
 	public void setNickDescription(String nickDescription) {
@@ -140,18 +149,22 @@ public class Account extends HashMap<String, Object> {
 	/**
 	 *  Daftar layanan yang digunakan untuk login dengan akun ini.
 	 */
-	public void setServices(String services) {
-		if (services == null || services.length() == 0)
+	public void setServices(ArrayList<String> services) {
+		if (services == null || services.size() == 0)
 			super.put("services", null);
 		else
 			super.put("services", services);
 	}
 
-	public void setMonth(Long month) {
-		if (month == null || month < 1 || month > 12)
-			super.put("month", null);
-		else
-			super.put("month", month);
+	public void setMonth(Object month) {
+		if (month instanceof Long) {
+			Long var = (Long) month;
+			if (!(var == null || var < 1 || var > 12)) {
+				super.put("month", var);
+				return;
+			}
+		}
+		super.put("month", null);
 	}
 
 	public void setYears(String years) {
@@ -214,8 +227,8 @@ public class Account extends HashMap<String, Object> {
 		return (String) super.get("user-name");
 	}
 
-	public String getServices() {
-		return (String) super.get("services");
+	public ArrayList<String> getServices() {
+		return (ArrayList<String>) super.get("services");
 	}
 
 	public String getNumberPhone() {
@@ -250,11 +263,4 @@ public class Account extends HashMap<String, Object> {
 		System.out.printf("%-20s --> %d\n", "Bulan", this.getMonth());
 		System.out.printf("%-20s --> %s\n", "Tahun", this.getYears());
 	}
-
-	public String toString() {
-		System.out.println(super.toString());
-		System.exit(1);
-		return super.toString();
-	}
-
 }

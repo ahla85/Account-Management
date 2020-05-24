@@ -33,7 +33,7 @@ public class Main {
             System.out.println("5. Menghapus akun");
             System.out.println("-".repeat(30));
             
-            inputUser = console.readLine("Masukkan pilihan Anda: ");
+            inputUser = console.readLine("\nMasukkan pilihan Anda: ");
             switch (inputUser) {
                 case "1":
                     clearScreen();

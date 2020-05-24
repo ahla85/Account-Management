@@ -73,14 +73,15 @@ public class Library implements CRUD {
             return;
         }
 
-        System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), accounts.size());
         ArrayList<Account> list = new ArrayList<>(accounts.values());
         for (int i = 0; i < list.size(); i++) {
+            clearScreen();
+            System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), accounts.size());
             System.out.println("\nData ke " + i);
             System.out.println("-".repeat(100));
             list.get(i).print();
             
-            if (getYesOrNo(console, "\nLanjutkan [y/n]?"))
+            if (!getYesOrNo(console, "\nLanjutkan [y/n]? "))
                 return;
         }
     }
@@ -93,18 +94,24 @@ public class Library implements CRUD {
         newAccount.setNickDescription(console.readLine("Masukkan deskripsi pendek (maks 50 chars): "));
         newAccount.setDescription(console.readLine("Masukkan deskripsi: "));
         newAccount.setEmail(console.readLine("Masukkan email: "));
-        newAccount.setServices(console.readLine("Masukkan services (delimiter ,): "));
+        ArrayList<String> layanan = new ArrayList<>();
+        for (String service : console.readLine("Masukkan services (delimiter ,): ").split(",")) {
+            layanan.add(service);
+        }
+        newAccount.setServices(layanan);
         newAccount.setRecoveryAccount(console.readLine("Masukkan account recovery: "));
         newAccount.setPassword(console.readLine("Masukkan password: "));
         newAccount.setNumberPhone(console.readLine("Masukkan numberphone: "));
-        // newAccount.setDate(console.readLine("Masukkan date: "));
-        // newAccount.setMonth(console.readLine("Masukkan month: "));
+        newAccount.setDate(console.readLine("Masukkan date: "));
+        newAccount.setMonth(console.readLine("Masukkan month: "));
         newAccount.setYears(console.readLine("Masukkan years: "));
 
         if (accounts.containsKey(newAccount.getEmail())) {
                 System.out.println("\nMaaf akun yang Anda masukkan sudah ada.");
                 return;
         }
+
+        clearScreen();
         System.out.println("\nData yang Anda masukkan adalah sebagai berikut:");
         System.out.println("-".repeat(50));
         newAccount.print();
