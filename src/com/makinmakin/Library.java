@@ -102,15 +102,13 @@ public class Library implements CRUD {
         newAccount.setRecoveryAccount(console.readLine("Masukkan account recovery: "));
         newAccount.setPassword(console.readLine("Masukkan password: "));
         newAccount.setNumberPhone(console.readLine("Masukkan numberphone: "));
-        // newAccount.setDate(console.readLine("Masukkan date: "));
-        // newAccount.setMonth(console.readLine("Masukkan month: "));
-        newAccount.setYears(console.readLine("Masukkan years: "));
-
+        newAccount.setBorn(console.readLine("Masukkan tanggal/bulan/tahun lahir: "));
+        
         if (accounts.containsKey(newAccount.getEmail())) {
                 System.out.println("\nMaaf akun yang Anda masukkan sudah ada.");
                 return;
         }
-
+        
         clearScreen();
         System.out.println("\nData yang Anda masukkan adalah sebagai berikut:");
         System.out.println("-".repeat(50));

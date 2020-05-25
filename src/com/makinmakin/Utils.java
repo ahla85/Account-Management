@@ -14,15 +14,9 @@ public class Utils {
     public static final File DATABASE = new File(Main.PATH + "//sources//database.json");
 
     public static void initAccountManagement(File path) {
-        path.mkdirs();
-
         try {
-            File file;
-
-            file = new File(path + "//" + DATABASE);
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-
+            DATABASE.getParentFile().mkdirs();
+            DATABASE.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,15 +1,21 @@
 package com.makinmakin.components.account;
 
-import java.time.Year;
 import java.util.HashMap;
 import java.util.ArrayList;
 
 import com.json.JSONObject;
 
 /**
- * Sebuah kelas yang mendefinsikan sebuah Account. 1. Email 2. Date 3. Nick
- * description 4. Description 5. Username 6. Month 7. Years 8. Numberphone 9.
- * Password 10. Recovery account 11. Services.
+ * Sebuah kelas yang mendefinsikan sebuah Account. 
+ * 1. Email (String) 
+ * 2. Nick description (String) 
+ * 3. Description (String) 
+ * 4. Username (String) 
+ * 5. Numberphone (String) 
+ * 6. Password (String) 
+ * 7. Recovery account (String) 
+ * 8. Services (ArrayList<String>).
+ * 9. Born (date/month/years (integer))
  */
 public class Account extends HashMap<String, Object> {
 
@@ -25,9 +31,7 @@ public class Account extends HashMap<String, Object> {
 		setRecoveryAccount(null);
 		setPassword(null);
 		setNumberPhone(null);
-		// setDate(null);
-		// setMonth(null);
-		setYears(null);
+		setBorn(null);
 	}
 	
 	public Account(Account account) {
@@ -39,9 +43,7 @@ public class Account extends HashMap<String, Object> {
 		setRecoveryAccount(account.getRecoveryAccount());
 		setPassword(account.getPassword());
 		setNumberPhone(account.getUserName());
-		// setDate(account.getDate());
-		// setMonth(account.getMonth());
-		setYears(account.getUserName());
+		setBorn(account.getBorn());
 	}
 	
 	public Account(JSONObject jSONObject) {
@@ -53,9 +55,6 @@ public class Account extends HashMap<String, Object> {
 		setRecoveryAccount((String) jSONObject.get(RECOVERY_ACCOUNT_KEYWORD));
 		setPassword((String) jSONObject.get(PASSWORD_KEYWORD));
 		setNumberPhone((String) jSONObject.get(NUMBER_PHONE_KEYWORD));
-		// setDate((Object) jSONObject.get(DATE_KEYWORD));
-		// setMonth((Object) jSONObject.get(MONTH_KEYWORD));
-		setYears(String.valueOf(jSONObject.get(YEARS_KEYWORD)));
 	}
 
 
@@ -67,9 +66,6 @@ public class Account extends HashMap<String, Object> {
 				case EMAIL_KEYWORD:
 					setEmail((String) value);
 					break;
-				// case DATE_KEYWORD:
-				// 	setDate((Object) value);
-					// break;
 				case NICK_DESCRIPTION_KEYWORD:
 					setNickDescription((String) value);
 					break;
@@ -80,14 +76,10 @@ public class Account extends HashMap<String, Object> {
 					setUserName((String) value);
 					break;
 				case SERVICES_KEYWORD:
-					System.out.println("value = " + value);
-					setServices((ArrayList<String>) value);
-					break;
-				// case MONTH_KEYWORD:
-				// 	setMonth((Object) value);
-				// 	break;
-				case YEARS_KEYWORD:
-					setYears((String) value);
+					ArrayList<String> layanan = new ArrayList<>();
+					for (String service : value.toString().split(","))
+						layanan.add(service);
+					setServices(layanan);
 					break;
 				case NUMBER_PHONE_KEYWORD:
 					setNumberPhone((String) value);
@@ -104,27 +96,22 @@ public class Account extends HashMap<String, Object> {
 		}
 	}
 
+	/**
+	 *  Mendefinisikan tanggal/bulan/tahun user lahir.
+	 */
+	public void setBorn(String born) {
+		if (born == null || born.equalsIgnoreCase(""))
+			super.put(BORN_KEYWORD, null);
+		else
+			super.put(BORN_KEYWORD, born);	
+	}
+
 	public void setEmail(String email) {
 		if (email == null || email.equalsIgnoreCase("") || email.length() > 40)
 			super.put(EMAIL_KEYWORD, null);
 		else
 			super.put(EMAIL_KEYWORD, email);
 	}
-
-	/**
-	 *  Tanggal pemilik akun lahir. 
-	 * @param date
-	 */
-	// public void setDate(Object date) {
-	// 	if (date instanceof Long) {
-	// 		Long var = (Long) date;
-	// 		if ((var >= 1 && var <= 31)) {
-	// 			super.put(DATE_KEYWORD, var);
-	// 			return;
-	// 		}
-	// 	}
-	// 	super.put(DATE_KEYWORD, null);
-	// }
 
 	public void setNickDescription(String nickDescription) {
 		if (nickDescription == null || nickDescription.equalsIgnoreCase("") || nickDescription.length() > 80)
@@ -157,29 +144,6 @@ public class Account extends HashMap<String, Object> {
 			super.put(SERVICES_KEYWORD, services);
 	}
 
-	// public void setMonth(Object month) {
-	// 	if (month instanceof Long) {
-	// 		Long var = (Long) month;
-	// 		if ((var >= 1 && var <= 12)) {
-	// 			super.put(MONTH_KEYWORD, var);
-	// 			return;
-	// 		}
-	// 	}
-	// 	super.put(MONTH_KEYWORD, null);
-	// }
-
-	public void setYears(String years) {
-		if (years != null)
-			try {
-				Year.parse(years);
-				super.put(YEARS_KEYWORD, years);
-			} catch (Exception e) {
-				super.put(YEARS_KEYWORD, null);
-			}
-		else 
-			super.put(YEARS_KEYWORD, null);
-	}
-
 	public void setNumberPhone(String numberPhone) {
 		if (numberPhone == null || numberPhone.equalsIgnoreCase("") || numberPhone.length() > 20)
 			super.put(NUMBER_PHONE_KEYWORD, null);
@@ -203,6 +167,10 @@ public class Account extends HashMap<String, Object> {
 
 
 	/* --> Getters <-- */
+
+	public String getBorn() {
+		return (String) super.get(BORN_KEYWORD);
+	}
 
 	public String getNickDescription() {
 		return (String) super.get(NICK_DESCRIPTION_KEYWORD);
@@ -236,18 +204,6 @@ public class Account extends HashMap<String, Object> {
 		return (String) super.get(NUMBER_PHONE_KEYWORD);
 	}
 
-	// public Long getDate() {
-	// 	return (Long) super.get(DATE_KEYWORD);
-	// }
-
-	// public Long getMonth() {
-	// 	return (Long) super.get(MONTH_KEYWORD);
-	// }
-
-	public String getYears() {
-		return (String) super.get(YEARS_KEYWORD);
-	}
-
 
 	/* --> Utils <-- */
 
@@ -259,9 +215,7 @@ public class Account extends HashMap<String, Object> {
 	public static final String PASSWORD_KEYWORD = "password";
 	public static final String SERVICES_KEYWORD = "services";
 	public static final String NUMBER_PHONE_KEYWORD = "number-phone";
-	// public static final String DATE_KEYWORD = "date";
-	// public static final String MONTH_KEYWORD = "month";
-	public static final String YEARS_KEYWORD = "years";
+	public static final String BORN_KEYWORD = "user-born";
 	
 	public void print() {
 		System.out.printf("%-20s --> %s\n", "Username", this.getUserName());
@@ -272,8 +226,6 @@ public class Account extends HashMap<String, Object> {
 		System.out.printf("%-20s --> %s\n", "Penyembuhan", this.getRecoveryAccount());
 		System.out.printf("%-20s --> %s\n", "Password", this.getPassword());
 		System.out.printf("%-20s --> %s\n", "Nomor HP", this.getNumberPhone());
-		// System.out.printf("%-20s --> %d\n", "Tanggal", this.getDate());
-		// System.out.printf("%-20s --> %d\n", "Bulan", this.getMonth());
-		System.out.printf("%-20s --> %s\n", "Tahun", this.getYears());
+		System.out.printf("%-20s --> %s\n", "Lahir", this.getBorn());
 	}
 }
