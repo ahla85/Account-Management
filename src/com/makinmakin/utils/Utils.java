@@ -1,4 +1,4 @@
-package com.makinmakin;
+package com.makinmakin.utils;
 
 import java.io.Console;
 import java.io.File;

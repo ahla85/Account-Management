@@ -37,7 +37,7 @@ public class Table extends Rectangle {
         NO_LENGTH(4),
         EMAIL_LENGTH(40),
         PASSWORD_LENGTH(40),
-        NICK_DESCRIPTION_LENGTH(80);
+        DESCRIPTION_LENGTH(80);
         
         private int space;
         Components(int space) {
@@ -61,7 +61,7 @@ public class Table extends Rectangle {
             if (pointer == 2)
                 stringBuilder.append(format("| %-" + components.getSpace() + "s", account.getPassword()));
             if (pointer == 3)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", account.getNickDescription()));
+                stringBuilder.append(format("| %-" + components.getSpace() + "s", account.getDescription()));
             pointer++;
         }
         stringBuilder.append("|");
@@ -82,7 +82,7 @@ public class Table extends Rectangle {
             if (pointer == 2)
                 stringBuilder.append(format("| %-" + components.getSpace() + "s", "Password"));
             if (pointer == 3)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", "Nick Description"));
+                stringBuilder.append(format("| %-" + components.getSpace() + "s", "Description"));
             pointer++;
         }
         stringBuilder.append("|");

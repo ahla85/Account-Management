@@ -10,6 +10,7 @@ import com.json.JSONArray;
 import com.json.JSONObject;
 import com.json.parser.JSONParser;
 import com.json.parser.ParseException;
+import com.makinmakin.utils.AccountComponentsInvalidException;
 
 /**
  * Kumpulan akun-akun yang dibaca dari database. Yang diurutkan berdasarkan
@@ -25,7 +26,11 @@ public class Accounts extends TreeMap<String, Account> {
             JSONArray<JSONObject> jsonArray = (JSONArray) new JSONParser().parse(new FileReader(file));
             AtomicReference<Account> account = new AtomicReference<>();
             jsonArray.forEach(V -> {
-                account.set(new Account(V));
+                try {
+                    account.set(new Account(V));
+                } catch (AccountComponentsInvalidException e) {
+                    System.err.println(e);
+                }
                 super.put(account.get().getEmail(), account.get());
             });
         } catch (IOException e) {

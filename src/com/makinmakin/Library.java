@@ -10,8 +10,9 @@ import com.json.JSONArray;
 import com.makinmakin.components.account.Account;
 import com.makinmakin.components.account.Accounts;
 import com.makinmakin.components.table.Table;
+import com.makinmakin.utils.AccountComponentsInvalidException;
 
-import static com.makinmakin.Utils.*;
+import static com.makinmakin.utils.Utils.*;
 import static java.lang.String.format;
 
 public class Library implements CRUD {
@@ -90,19 +91,22 @@ public class Library implements CRUD {
     public void addAccount() {
         Accounts accounts = new Accounts(DATABASE);
         Account newAccount = new Account();
-        newAccount.setUserName(console.readLine("Masukkan username: "));
-        newAccount.setNickDescription(console.readLine("Masukkan deskripsi pendek (maks 50 chars): "));
-        newAccount.setDescription(console.readLine("Masukkan deskripsi: "));
-        newAccount.setEmail(console.readLine("Masukkan email: "));
-        ArrayList<String> layanan = new ArrayList<>();
-        for (String service : console.readLine("Masukkan services (delimiter ,): ").split(",")) {
-            layanan.add(service);
+        try {
+            newAccount.setUserName(console.readLine("Masukkan username: "));
+            newAccount.setDescription(console.readLine("Masukkan deskripsi (maks 50 chars): "));
+            newAccount.setEmail(console.readLine("Masukkan email: "));
+            ArrayList<String> layanan = new ArrayList<>();
+            for (String service : console.readLine("Masukkan services (delimiter ,): ").split(",")) {
+                layanan.add(service);
+            }
+            newAccount.setServices(layanan);
+            newAccount.setRecoveryAccount(console.readLine("Masukkan account recovery: "));
+            newAccount.setPassword(console.readLine("Masukkan password: "));
+            newAccount.setNumberPhone(console.readLine("Masukkan numberphone: "));
+            newAccount.setBorn(console.readLine("Masukkan tanggal/bulan/tahun lahir: "));
+        } catch (AccountComponentsInvalidException e) {
+            System.err.println(e);
         }
-        newAccount.setServices(layanan);
-        newAccount.setRecoveryAccount(console.readLine("Masukkan account recovery: "));
-        newAccount.setPassword(console.readLine("Masukkan password: "));
-        newAccount.setNumberPhone(console.readLine("Masukkan numberphone: "));
-        newAccount.setBorn(console.readLine("Masukkan tanggal/bulan/tahun lahir: "));
         
         if (accounts.containsKey(newAccount.getEmail())) {
                 System.out.println("\nMaaf akun yang Anda masukkan sudah ada.");
@@ -159,7 +163,11 @@ public class Library implements CRUD {
                     //  Update perkomponen.
                     V.forEach((keyAccount, valueAccount) -> {
                         if (getYesOrNo(console, format("\nApakah Anda ingin merubah %s [y/n]? ", keyAccount)))
-                            V.set(keyAccount, console.readLine("Masukkan %s baru: ", keyAccount));
+                            try {
+                                V.set(keyAccount, console.readLine("Masukkan %s baru: ", keyAccount));
+                            } catch (AccountComponentsInvalidException e) {
+                                System.err.println(e);
+                            }
                     });
 
                     if (getYesOrNo(console, "\nApakah Anda ingin menyimpan pembaharuan tersebut [y/n]? ")) {

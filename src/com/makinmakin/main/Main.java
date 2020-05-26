@@ -4,7 +4,7 @@ import java.io.Console;
 import java.io.File;
 
 import com.makinmakin.Library;
-import static com.makinmakin.Utils.*;
+import static com.makinmakin.utils.Utils.*;
 
 public class Main {
 
@@ -15,6 +15,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        
         new Main();
 
         boolean isNext = true;
