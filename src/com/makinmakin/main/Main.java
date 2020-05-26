@@ -38,26 +38,50 @@ public class Main {
             switch (inputUser) {
                 case "1":
                     clearScreen();
+                    System.out.println("-".repeat(20));
+                    System.out.println("MENAMPILKAN SEMUA AKUN");
+                    System.out.println("-".repeat(20));
+                    System.out.println();
                     library.printAccounts();
                     break;
                 case "2":
                     clearScreen();
+                    System.out.println("-".repeat(20));
+                    System.out.println("MENCARI AKUN");
+                    System.out.println("-".repeat(20));
+                    System.out.println();
                     library.searchAccounts();
                     break;
                 case "3":
                     clearScreen();
+                    System.out.println("-".repeat(20));
+                    System.out.println("MENAMBAH AKUN");
+                    System.out.println("-".repeat(20));
+                    System.out.println();
                     library.addAccount();
                     break;
                 case "4":
                     clearScreen();
+                    System.out.println("-".repeat(20));
+                    System.out.println("MENGUBAH AKUN");
+                    System.out.println("-".repeat(20));
+                    System.out.println();
                     library.updateAccount();
                     break;
                 case "5":
                     clearScreen();
+                    System.out.println("-".repeat(20));
+                    System.out.println("MENGHPAPUS AKUN");
+                    System.out.println("-".repeat(20));
+                    System.out.println();
                     library.deleteAccount();
                     break;
                 case "2 -v":
                     clearScreen();
+                    System.out.println("-".repeat(20));
+                    System.out.println("MENCARI AKUN SECARA DETAIL");
+                    System.out.println("-".repeat(20));
+                    System.out.println();
                     library.searchVerboseAccount();
                     break;
                 default:

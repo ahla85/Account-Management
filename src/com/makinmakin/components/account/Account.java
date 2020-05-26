@@ -15,7 +15,7 @@ import com.json.JSONObject;
  * 5. Password (String) 
  * 6. Recovery account (String) 
  * 7. Services (ArrayList<String>).
- * 8. Born (date/month/years (integer))
+ * 8. Born (date/month/years (String))
  */
 public class Account extends HashMap<String, Object> {
 
@@ -54,6 +54,7 @@ public class Account extends HashMap<String, Object> {
 		setRecoveryAccount((String) jSONObject.get(RECOVERY_ACCOUNT_KEYWORD));
 		setPassword((String) jSONObject.get(PASSWORD_KEYWORD));
 		setNumberPhone((String) jSONObject.get(NUMBER_PHONE_KEYWORD));
+		setBorn((String) jSONObject.get(BORN_KEYWORD));
 	}
 
 
@@ -107,7 +108,7 @@ public class Account extends HashMap<String, Object> {
 	public void setEmail(String email) throws AccountComponentsInvalidException {
 		if (email == null || email.equalsIgnoreCase("") || email.length() > 40) {
 			super.put(EMAIL_KEYWORD, null);
-			if (email.length() > 40)
+			if (email != null && email.length() > 40)
 				throw new AccountComponentsInvalidException("Panjang karakter email tidak boleh lebih dari 40 karakter.");
 		} else
 			super.put(EMAIL_KEYWORD, email);
@@ -147,7 +148,7 @@ public class Account extends HashMap<String, Object> {
 	public void setPassword(String password) throws AccountComponentsInvalidException {
 		if (password == null || password.equalsIgnoreCase("") || password.length() > 30) {
 			super.put(PASSWORD_KEYWORD, null);
-			if (password.length() > 30)
+			if (password != null && password.length() > 30)
 				throw new AccountComponentsInvalidException("Panjang karakter password tidak boleh lebih dari 40 karakter.");
 		} else
 			super.put(PASSWORD_KEYWORD, password);
@@ -156,7 +157,7 @@ public class Account extends HashMap<String, Object> {
 	public void setRecoveryAccount(String recoveryAccount) throws AccountComponentsInvalidException {
 		if (recoveryAccount == null || recoveryAccount.equalsIgnoreCase("") || recoveryAccount.length() > 40) {
 			super.put(RECOVERY_ACCOUNT_KEYWORD, null);
-			if (recoveryAccount.length() > 40)
+			if (recoveryAccount != null && recoveryAccount.length() > 40)
 				throw new AccountComponentsInvalidException("Panjang karakter akun penyembuhan tidak boleh lebih dari 40 karakter.");
 		} else
 			super.put(RECOVERY_ACCOUNT_KEYWORD, recoveryAccount);

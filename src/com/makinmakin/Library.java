@@ -75,7 +75,7 @@ public class Library implements CRUD {
         }
 
         ArrayList<Account> list = new ArrayList<>(accounts.values());
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 1; i <= list.size(); i++) {
             clearScreen();
             System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), accounts.size());
             System.out.println("\nData ke " + i);
