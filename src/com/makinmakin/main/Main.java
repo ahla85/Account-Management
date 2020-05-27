@@ -17,11 +17,11 @@ public class Main {
     public static void main(String[] args) {
         
         new Main();
-
         boolean isNext = true;
         String inputUser = null;
         Console console = System.console();
         Library library = new Library();
+
         while (isNext) {
 
             clearScreen();

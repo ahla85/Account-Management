@@ -75,10 +75,10 @@ public class Library implements CRUD {
         }
 
         ArrayList<Account> list = new ArrayList<>(accounts.values());
-        for (int i = 1; i <= list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             clearScreen();
             System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), accounts.size());
-            System.out.println("\nData ke " + i);
+            System.out.println("\nData ke " + (1+i));
             System.out.println("-".repeat(100));
             list.get(i).print();
             
@@ -95,6 +95,13 @@ public class Library implements CRUD {
             newAccount.setUserName(console.readLine("Masukkan username: "));
             newAccount.setDescription(console.readLine("Masukkan deskripsi (maks 50 chars): "));
             newAccount.setEmail(console.readLine("Masukkan email: "));
+            if (accounts.containsKey(newAccount.getEmail())) {
+                clearScreen();
+                System.out.println("\nMaaf akun yang Anda masukkan sudah ada, sebagai berikut:");
+                System.out.println("-".repeat(100));
+                accounts.get(newAccount.getEmail()).print();
+                return;
+            }
             ArrayList<String> layanan = new ArrayList<>();
             for (String service : console.readLine("Masukkan services (delimiter ,): ").split(",")) {
                 layanan.add(service);
@@ -106,16 +113,12 @@ public class Library implements CRUD {
             newAccount.setBorn(console.readLine("Masukkan tanggal/bulan/tahun lahir: "));
         } catch (AccountComponentsInvalidException e) {
             System.err.println(e);
-        }
-        
-        if (accounts.containsKey(newAccount.getEmail())) {
-                System.out.println("\nMaaf akun yang Anda masukkan sudah ada.");
-                return;
+            return;
         }
         
         clearScreen();
         System.out.println("\nData yang Anda masukkan adalah sebagai berikut:");
-        System.out.println("-".repeat(50));
+        System.out.println("-".repeat(100));
         newAccount.print();
 
         if (!getYesOrNo(console, "\nApakah Anda ingin menyimpan data tersebut [y/n]? "))
