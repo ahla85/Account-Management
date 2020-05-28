@@ -41,7 +41,7 @@ public class Account extends HashMap<String, Object> {
 	public Account(JSONObject jSONObject) throws AccountComponentsInvalidException {
 		setUserName((String) jSONObject.get(Key.USER_NAME_KEYWORD.getKey()));
 		setServices((ArrayList<String>) jSONObject.get(Key.SERVICES_KEYWORD.getKey()));
-		setDescription((String) jSONObject.get(Key.DESKRIPTION_KEYWORD.getKey()));
+		setDescription((String) jSONObject.get(Key.DESCRIPTION_KEYWORD.getKey()));
 		setEmail((String) jSONObject.get(Key.EMAIL_KEYWORD.getKey()));
 		setRecoveryAccount((String) jSONObject.get(Key.RECOVERY_ACCOUNT_KEYWORD.getKey()));
 		setPassword((String) jSONObject.get(Key.PASSWORD_KEYWORD.getKey()));
@@ -90,7 +90,7 @@ public class Account extends HashMap<String, Object> {
 	 *  Set deskripsi akun (bersifat opsional).
 	 */
 	public void setDescription(String description) {
-		this.put(Key.DESKRIPTION_KEYWORD.getKey(), description);
+		this.put(Key.DESCRIPTION_KEYWORD.getKey(), description);
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class Account extends HashMap<String, Object> {
 	}
 
 	public String getDescription() {
-		return (String) super.get(Key.DESKRIPTION_KEYWORD.getKey());
+		return (String) super.get(Key.DESCRIPTION_KEYWORD.getKey());
 	}
 
 	public String getEmail() {
@@ -192,7 +192,7 @@ public class Account extends HashMap<String, Object> {
 	public static enum Key {
 		
 		USER_NAME_KEYWORD("user-name"),
-		DESKRIPTION_KEYWORD("description"),
+		DESCRIPTION_KEYWORD("description"),
 		EMAIL_KEYWORD("email"),
 		RECOVERY_ACCOUNT_KEYWORD("recovery-account"),
 		PASSWORD_KEYWORD("password"),

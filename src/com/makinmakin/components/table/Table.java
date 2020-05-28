@@ -34,35 +34,37 @@ public class Table extends Rectangle {
      *  Kelas yang didefinisikan untuk menyimpan data-data setiap komponen.
      */
     public static enum Components {
-        NO_LENGTH(4),
-        EMAIL_LENGTH(40),
-        PASSWORD_LENGTH(40),
-        DESCRIPTION_LENGTH(80);
+        NO_LENGTH(4, "NO"),
+        EMAIL_LENGTH(40, Account.Key.EMAIL_KEYWORD.getKey()),
+        PASSWORD_LENGTH(40, Account.Key.PASSWORD_KEYWORD.getKey()),
+        DESCRIPTION_LENGTH(80, Account.Key.DESCRIPTION_KEYWORD.getKey());
         
         private int space;
-        Components(int space) {
+        private String lable;
+        Components(int space, String lable) {
             this.space = space;
+            this.lable = lable;
         }
 
         public int getSpace() {
             return this.space;
         }
+
+        public String getLable() {
+            return this.lable;
+        }
     }
 
     private String getWillPrint(int no, Account account) {
-        int pointer = 0;
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.delete(0, stringBuilder.length());
         for (Components components : Components.values()) {
-            if (pointer == 0)
+            if (components.getLable().equalsIgnoreCase("NO")) {
                 stringBuilder.append(format("| %-" + components.getSpace() + "d", no));
-            if (pointer == 1)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", account.getEmail()));
-            if (pointer == 2)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", account.getPassword()));
-            if (pointer == 3)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", account.getDescription()));
-            pointer++;
+                continue;
+            }
+
+            stringBuilder.append(format("| %-" + components.getSpace() + "s", 
+                account.get(components.getLable())));
         }
         stringBuilder.append("|");
         return stringBuilder.toString();
@@ -71,19 +73,10 @@ public class Table extends Rectangle {
     public void printTable() {
         
         //  Lable.
-        int pointer = 0;
         StringBuilder stringBuilder = new StringBuilder();
         System.out.println("-".repeat(super.getWidth()));
         for (Components components : Components.values()) {
-            if (pointer == 0)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", "NO"));
-            if (pointer == 1)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", "Email"));
-            if (pointer == 2)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", "Password"));
-            if (pointer == 3)
-                stringBuilder.append(format("| %-" + components.getSpace() + "s", "Description"));
-            pointer++;
+            stringBuilder.append(format("| %-" + components.getSpace() + "s", components.getLable()));
         }
         stringBuilder.append("|");
         System.out.println(stringBuilder);
@@ -95,6 +88,4 @@ public class Table extends Rectangle {
         });
         System.out.println("-".repeat(super.getWidth()));
     }
-
-
 }
