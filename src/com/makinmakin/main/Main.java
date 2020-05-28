@@ -84,12 +84,6 @@ public class Main {
                     System.out.println();
                     library.searchVerboseAccount();
                     break;
-                case "--about":
-                    clearScreen();
-                    for (About about : About.values()) {
-                        System.out.printf("%-10s = %s\n", about, about.getValue());
-                    }
-                    break;
                 default:
                     System.err.println("Input yang Anda masukan tidak valid!");
             }
