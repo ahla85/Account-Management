@@ -31,7 +31,7 @@ public class Table extends Rectangle {
     Accounts accounts;
 
     /**
-     *  Kelas yang didefinisikan untuk menyimpan data-data setiap komponen.
+     *  Kelas yang didefinisikan untuk menyimpan data-data label.
      */
     public static enum Components {
         NO_LENGTH(4, "NO"),
@@ -71,7 +71,6 @@ public class Table extends Rectangle {
     }
 
     public void printTable() {
-        
         //  Lable.
         StringBuilder stringBuilder = new StringBuilder();
         System.out.println("-".repeat(super.getWidth()));

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.json.JSONArray;
 import com.makinmakin.components.account.Account;
@@ -23,7 +24,10 @@ public class Library implements CRUD {
 
     // }
 
+    /* --> Fields <-- */
+    
     private Table table = null;
+    
     private Console console = System.console();
 
     @Override
@@ -46,8 +50,8 @@ public class Library implements CRUD {
             return;
         }
 
+        //  Input keywords.
         String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
-        //  Filter objek Accounts.
         accounts.filter(keywords);
         if (accounts.isEmpty()) {
             System.out.println("Data tidak ditemukan!");
@@ -59,37 +63,12 @@ public class Library implements CRUD {
         table.printTable();
     }
 
-    public void searchVerboseAccount() {
-        Accounts accounts = new Accounts(DATABASE);
-        if (accounts.isEmpty()) {
-            System.out.println("Database kosong!");
-            return;
-        }
-
-        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
-        //  Filter objek Accounts.
-        accounts.filter(keywords);
-        if (accounts.isEmpty()) {
-            System.out.println("Data tidak ditemukan!");
-            return;
-        }
-
-        ArrayList<Account> list = new ArrayList<>(accounts.values());
-        for (int i = 0; i < list.size(); i++) {
-            clearScreen();
-            System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), accounts.size());
-            System.out.println("\nData ke " + (1+i));
-            System.out.println("-".repeat(100));
-            list.get(i).print();
-            
-            if (!getYesOrNo(console, "\nLanjutkan [y/n]? "))
-                return;
-        }
-    }
-
     @Override
     public void addAccount() {
+        // Variabel untuk menampung accounts dari database untuk dikelola.
         Accounts accounts = new Accounts(DATABASE);
+
+        //  Variabel untuk menampung objek Account baru.
         Account newAccount = new Account();
         try {
             newAccount.setUserName(console.readLine("Masukkan username: "));
@@ -135,15 +114,18 @@ public class Library implements CRUD {
 
     @Override
     public void updateAccount() {
+        //  Variabel untuk menampung accounts dari database untuk dikelola.
         Accounts accounts = new Accounts(DATABASE);
+        
+        //  Variabel untuk menampung accounts sementara utuk dipilih.
         Accounts filterAccounts = (Accounts) accounts.clone();
         if (accounts.isEmpty()) {
             System.out.println("Database kosong!");
             return;
         }
 
+        //  Input keywords.
         String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
-        // Filter objek Accounts.
         filterAccounts.filter(keywords);
         if (accounts.isEmpty()) {
             System.out.println("Data tidak ditemukan!");
@@ -151,13 +133,16 @@ public class Library implements CRUD {
         }
 
         table = new Table(accounts);
-        System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), accounts.size());
+        System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), filterAccounts.size());
         table.printTable();
 
-        String email = console.readLine("\nMasukkan email yang akan diperbaharui: ");
+        String email = console.readLine("\nMasukkan email yang akan diperbarui: ");
         clearScreen();
+        //  Untuk menampilkan pesan apakah akun dengan email tertentu ditemukan.
+        AtomicBoolean isFound = new AtomicBoolean(false);
         filterAccounts.forEach((K, V) -> {
             if (V.getEmail().equals(email)) {
+                isFound.set(true);
                 System.out.println("\nData ditemukan!");
                 System.out.println("-".repeat(100));
                 V.print();
@@ -173,7 +158,7 @@ public class Library implements CRUD {
                             }
                     });
 
-                    if (getYesOrNo(console, "\nApakah Anda ingin menyimpan pembaharuan tersebut [y/n]? ")) {
+                    if (getYesOrNo(console, "\nApakah Anda ingin menyimpan pembaruan tersebut [y/n]? "))
                         try {
                             // Menyimpan pada databse.
                             accounts.replace(K, V);
@@ -184,10 +169,12 @@ public class Library implements CRUD {
                             e.printStackTrace();
                         }
                         return;
-                    }
                 }
             }
         });
+
+        if (!isFound.get())
+            System.out.printf("Akun dengan email %s tidak ditemukan!\n", email);
     }
 
     @Override
@@ -199,8 +186,8 @@ public class Library implements CRUD {
             return;
         }
 
+        //  Input keywords.
         String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
-        // Filter objek Accounts.
         accounts.filter(keywords);
         if (accounts.isEmpty()) {
             System.out.println("Data tidak ditemukan!");
@@ -211,7 +198,8 @@ public class Library implements CRUD {
         System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n",
                 Arrays.toString(keywords), accounts.size());
         table.printTable();
-
+		
+		//  Input email yang akan dihapus.
         String email = console.readLine("\nMasukkan email yang akan dihapus: ");
         clearScreen();
         filterAccounts.forEach((K, V) -> {
@@ -220,7 +208,7 @@ public class Library implements CRUD {
                 System.out.println("-".repeat(100));
                 V.print();
 
-                if (getYesOrNo(console, "\nApakah Anda ingin menghapus data tersebut [y/n]? ")) {
+                if (getYesOrNo(console, "\nApakah Anda ingin menghapus data tersebut [y/n]? "))
                     try {
                         // Menyimpan pada databse.
                         accounts.remove(K);
@@ -230,11 +218,59 @@ public class Library implements CRUD {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+
             }
         });
     }
 
-   
-    
+    /* --> Another methods <-- */
+
+    // public void printByServices() {
+    //     Accounts accounts = new Accounts(DATABASE);
+    //     if (accounts.isEmpty()) {
+    //         System.out.println("Database kosong!");
+    //         return;
+    //     }
+
+    //     //  Input services.
+    //     String[] services = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
+    //     accounts.filter(services);
+    //     if (accounts.isEmpty()) {
+    //         System.out.println("Data tidak ditemukan!");
+    //         return;
+    //     }
+
+
+    // }
+
+    /**
+     *  Menampilkan akun-akun yang memuat keywords secara detail (verbose mode).
+     */
+    public void searchVerboseAccount() {
+        Accounts accounts = new Accounts(DATABASE);
+        if (accounts.isEmpty()) {
+            System.out.println("Database kosong!");
+            return;
+        }
+
+        //  Input keywords.
+        String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
+        accounts.filter(keywords);
+        if (accounts.isEmpty()) {
+            System.out.println("Data tidak ditemukan!");
+            return;
+        }
+
+        ArrayList<Account> list = new ArrayList<>(accounts.values());
+        for (int i = 0; i < list.size(); i++) {
+            clearScreen();
+            System.out.printf("\nData yang ditemukan dengan keywords %s ada %d, sebagai berikut:\n", Arrays.toString(keywords), accounts.size());
+            System.out.println("\nData ke " + (1+i));
+            System.out.println("-".repeat(100));
+            list.get(i).print();
+            
+            if (!getYesOrNo(console, "\nLanjutkan [y/n]? "))
+                return;
+        }
+    }
 }

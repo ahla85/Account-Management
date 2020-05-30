@@ -39,11 +39,12 @@ public class Accounts extends TreeMap<String, Account> {
     }
 
     /**
-     * Menyimpan akun-akun hanya yang akun tersebut memuat @param keywords.
+     * Menyimpan akun-akun hanya yang apabila akun tersebut memuat keywords.
      */
     public Accounts filter(String[] keywords) {
         Accounts accounts = new Accounts();
         super.forEach((K1, V1) -> {
+            //  Cek perkomponen.
             V1.forEach((K2, V2) -> {
                 if (V2 != null) {
                     for (String keyword : keywords) {
