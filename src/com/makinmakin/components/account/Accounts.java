@@ -19,7 +19,7 @@ import com.makinmakin.utils.AccountComponentsInvalidException;
  */
 public class Accounts extends TreeMap<String, Account> {
 
-    private Accounts() {
+    public Accounts() {
     }
 
     public Accounts(File file) {

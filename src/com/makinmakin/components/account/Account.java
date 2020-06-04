@@ -104,7 +104,13 @@ public class Account extends HashMap<String, Object> {
 	 *  Daftar layanan yang digunakan untuk login dengan akun ini (bersifat opsional).
 	 */
 	public void setServices(ArrayList<String> services) {
-		this.put(Key.SERVICES_KEYWORD.getKey(), services);
+		ArrayList b = new ArrayList();
+		services.forEach(V -> {
+			if (!b.contains(V))
+				b.add(V);
+		});
+
+		this.put(Key.SERVICES_KEYWORD.getKey(), b);
 	}
 
 	/**

@@ -39,7 +39,7 @@ public class Library implements CRUD {
     public void printAccounts() {
         Accounts accounts = new Accounts(DATABASE);
         if (accounts.isEmpty()) {
-            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
+            System.err.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
         table = new Table(accounts);
@@ -51,7 +51,7 @@ public class Library implements CRUD {
     public void searchAccounts() {
         Accounts accounts = new Accounts(DATABASE);
         if (accounts.isEmpty()) {
-            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
+            System.err.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
 
@@ -59,7 +59,7 @@ public class Library implements CRUD {
         String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         accounts.filter(keywords);
         if (accounts.isEmpty()) {
-            System.out.println(Library.MESSAGE_DATA_IS_NOT_FOUND);
+            System.err.println(Library.MESSAGE_DATA_IS_NOT_FOUND);
             return;
         }
 
@@ -195,7 +195,7 @@ public class Library implements CRUD {
         String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         accounts.filter(keywords);
         if (accounts.isEmpty()) {
-            System.out.println("Data tidak ditemukan!");
+            System.err.println(Library.MESSAGE_DATA_IS_NOT_FOUND);
             return;
         }
 
@@ -230,25 +230,25 @@ public class Library implements CRUD {
 
     /* --> Another methods <-- */
 
+    /**
+     *  Menampilkan accounts yang diurutkan berdasarkan service secara ascending dari
+     * services terbanyak.
+     */
     public void printByServices() {
         Accounts accounts = new Accounts(DATABASE);
         if (accounts.isEmpty()) {
-            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
+            System.err.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
 
-        HashMap<String, ArrayList<Account>> accountsByService = new HashMap<>();
-        ArrayList<Account> list = new ArrayList<>();
+        HashMap<String, Accounts> hashMap = new HashMap<>();
+        Accounts resultAccounts = new Accounts();
         accounts.forEach((K, V) -> {
-            for (String service : V.getServices()) {
-                if (accountsByService.containsKey(service)) {
-                    list.add(V);
-                } else {
-
-                }
-            }
+            V.getServices().forEach(service -> {
+                resultAccounts.put(V.getEmail(), V);
+                hashMap.put(service, resultAccounts);
+            });
         });
-
     }
 
     /**
@@ -257,7 +257,7 @@ public class Library implements CRUD {
     public void searchVerboseAccount() {
         Accounts accounts = new Accounts(DATABASE);
         if (accounts.isEmpty()) {
-            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
+            System.err.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
 
