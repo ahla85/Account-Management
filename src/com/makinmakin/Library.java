@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.json.JSONArray;
@@ -26,15 +27,19 @@ public class Library implements CRUD {
 
     /* --> Fields <-- */
     
+    public static final String MESSAGE_DATABASE_IS_EMPTY = "Database kosong.";
+    public static final String MESSAGE_DATA_IS_NOT_FOUND = "Data tidak ditemukan.";
+    public static final String MESSAGE_DATA_IS_ADDED     = "Data berhasil ditambahkan.";
+    public static final String MESSAGE_DATA_IS_CHANGED   = "Data berhasil dirubah.";
+
     private Table table = null;
-    
     private Console console = System.console();
 
     @Override
     public void printAccounts() {
         Accounts accounts = new Accounts(DATABASE);
         if (accounts.isEmpty()) {
-            System.out.println("Database kosong!");
+            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
         table = new Table(accounts);
@@ -46,7 +51,7 @@ public class Library implements CRUD {
     public void searchAccounts() {
         Accounts accounts = new Accounts(DATABASE);
         if (accounts.isEmpty()) {
-            System.out.println("Database kosong!");
+            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
 
@@ -54,7 +59,7 @@ public class Library implements CRUD {
         String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         accounts.filter(keywords);
         if (accounts.isEmpty()) {
-            System.out.println("Data tidak ditemukan!");
+            System.out.println(Library.MESSAGE_DATA_IS_NOT_FOUND);
             return;
         }
 
@@ -105,8 +110,8 @@ public class Library implements CRUD {
 
         accounts.put(newAccount.getEmail(), newAccount);
         try {
-            JSONArray.writeJSONString(new ArrayList<>(accounts.values()), new FileWriter(DATABASE), true);
-            System.out.println("Berhasil menambah akun!");
+            JSONArray.writeJSONString((ArrayList<Account>) accounts.values(), new FileWriter(DATABASE), true);
+            System.out.println(Library.MESSAGE_DATA_IS_ADDED);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,15 +125,15 @@ public class Library implements CRUD {
         //  Variabel untuk menampung accounts sementara utuk dipilih.
         Accounts filterAccounts = (Accounts) accounts.clone();
         if (accounts.isEmpty()) {
-            System.out.println("Database kosong!");
+            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
 
         //  Input keywords.
         String[] keywords = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
         filterAccounts.filter(keywords);
-        if (accounts.isEmpty()) {
-            System.out.println("Data tidak ditemukan!");
+        if (filterAccounts.isEmpty()) {
+            System.out.println(Library.MESSAGE_DATA_IS_NOT_FOUND);
             return;
         }
 
@@ -162,7 +167,7 @@ public class Library implements CRUD {
                         try {
                             // Menyimpan pada databse.
                             accounts.replace(K, V);
-                            JSONArray.writeJSONString(new ArrayList<>(accounts.values()), new FileWriter(DATABASE),
+                            JSONArray.writeJSONString((ArrayList<Account>) accounts.values(), new FileWriter(DATABASE),
                                     true);
                             System.out.println("Berhasil update data!");
                         } catch (IOException e) {
@@ -182,7 +187,7 @@ public class Library implements CRUD {
         Accounts accounts = new Accounts(DATABASE);
         Accounts filterAccounts = (Accounts) accounts.clone();
         if (accounts.isEmpty()) {
-            System.out.println("Database kosong!");
+            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
 
@@ -212,7 +217,7 @@ public class Library implements CRUD {
                     try {
                         // Menyimpan pada databse.
                         accounts.remove(K);
-                        JSONArray.writeJSONString(new ArrayList<>(accounts.values()), new FileWriter(DATABASE),
+                        JSONArray.writeJSONString((ArrayList<Account>) accounts.values(), new FileWriter(DATABASE),
                                 true);
                         System.out.println("Berhasil hapus data!");
                     } catch (IOException e) {
@@ -225,23 +230,26 @@ public class Library implements CRUD {
 
     /* --> Another methods <-- */
 
-    // public void printByServices() {
-    //     Accounts accounts = new Accounts(DATABASE);
-    //     if (accounts.isEmpty()) {
-    //         System.out.println("Database kosong!");
-    //         return;
-    //     }
+    public void printByServices() {
+        Accounts accounts = new Accounts(DATABASE);
+        if (accounts.isEmpty()) {
+            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
+            return;
+        }
 
-    //     //  Input services.
-    //     String[] services = console.readLine("Masukkan keywords yang akan dicari (delimiter spasi): ").split("\\s");
-    //     accounts.filter(services);
-    //     if (accounts.isEmpty()) {
-    //         System.out.println("Data tidak ditemukan!");
-    //         return;
-    //     }
+        HashMap<String, ArrayList<Account>> accountsByService = new HashMap<>();
+        ArrayList<Account> list = new ArrayList<>();
+        accounts.forEach((K, V) -> {
+            for (String service : V.getServices()) {
+                if (accountsByService.containsKey(service)) {
+                    list.add(V);
+                } else {
 
+                }
+            }
+        });
 
-    // }
+    }
 
     /**
      *  Menampilkan akun-akun yang memuat keywords secara detail (verbose mode).
@@ -249,7 +257,7 @@ public class Library implements CRUD {
     public void searchVerboseAccount() {
         Accounts accounts = new Accounts(DATABASE);
         if (accounts.isEmpty()) {
-            System.out.println("Database kosong!");
+            System.out.println(Library.MESSAGE_DATABASE_IS_EMPTY);
             return;
         }
 

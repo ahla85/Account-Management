@@ -222,13 +222,8 @@ public class Account extends HashMap<String, Object> {
 	}
 
 	public void print() {
-		System.out.printf("%-20s --> %s\n", "Username", this.getUserName());
-		System.out.printf("%-20s --> %s\n", "Deskripsi", this.getDescription());
-		System.out.printf("%-20s --> %s\n", "Email", this.getEmail());
-		System.out.printf("%-20s --> %s\n", "Services", this.getServices());
-		System.out.printf("%-20s --> %s\n", "Penyembuhan", this.getRecoveryAccount());
-		System.out.printf("%-20s --> %s\n", "Password", this.getPassword());
-		System.out.printf("%-20s --> %s\n", "Nomor HP", this.getNumberPhone());
-		System.out.printf("%-20s --> %s\n", "Lahir", this.getBorn());
+		super.forEach((K, V) -> {
+			System.out.printf("%-20s | %s\n", K, V);
+		});
 	}
 }
